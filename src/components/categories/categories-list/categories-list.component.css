@@ -1,0 +1,17 @@
+
+.ellipsis { 
+    position: relative; 
+} 
+ 
+.ellipsis p { 
+    position: absolute; 
+    left: 0; 
+    right: 0; 
+    white-space: nowrap; 
+    overflow: scroll; 
+    text-overflow:clip; 
+}
+
+::-webkit-scrollbar{
+    display: none;
+}

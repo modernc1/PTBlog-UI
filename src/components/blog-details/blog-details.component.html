@@ -1,0 +1,44 @@
+<ng-container *ngIf="blogPost$ | async as blogPost; else loader">
+    <div class="container">
+        <div class="py-5">
+            <div class="col-12 col-md-8 col-lg-6 mx-auto">
+                <div class="text-center">
+                    <img [src]="blogPost.featureImageUrl" [title]="blogPost.title"
+                    class="img-fluid">
+
+                    <h1 class="mt-4">{{blogPost.title}}</h1>
+
+                    <div class="d-flex justify-content-between">
+                        <span>{{blogPost.author}}</span>
+                        <span>{{blogPost.dateCreated | date:'dd-MM-yyyy'}}</span>
+
+                    </div>
+                </div>
+
+                <div *ngIf="blogPost.categories" class="mt-2">
+                    <span class="badge bg-success ms-2" *ngFor="let cat of blogPost.categories">
+                        {{cat.name}}
+                    </span>
+                </div>
+
+                <div class="mt-4 blog-content">
+                    <markdown [data]="blogPost.content"></markdown>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-template #loader>
+    <div class="container">
+        <div class="text-center my-5 py-5">
+            <h1 class="display-1 fw-bold">404</h1>
+            <p class="fs-3"> <span class="text-danger">Opps!</span> Page not found.</p>
+            <p class="lead">
+                The page you’re looking for doesn’t exist.
+            </p>
+            <a [routerLink]="['']"  class="btn btn-primary">Go Home</a>
+        </div>
+    </div>
+    
+</ng-template>

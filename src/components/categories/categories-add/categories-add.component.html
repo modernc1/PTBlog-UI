@@ -1,0 +1,40 @@
+
+<div class="container mt-5">
+    
+    <h3 class="mb-3 text-center">{{isEditing? 'تعديل التصنيف' : 'أضف تصنيف'}}</h3>
+
+    <div *ngIf="errorMessage != ''" class="alert alert-danger text-center">
+        {{errorMessage}}
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <form *ngIf="errorMessage === ''" class="border rounded p-4 w-75" (ngSubmit)="OnSubmit()" #categoryForm="ngForm">
+
+            <div class="form-floating mb-3">
+                <input type="text" required minlength="3" maxlength="20" #name="ngModel" class="form-control" id="floatingInput" name="name" [(ngModel)]="category.name">
+                <label for="floatingInput" style="left: auto;">اسم التصنيف</label>
+                
+                <div class="mt-2" *ngIf="name.invalid && (name.touched || name.dirty)">
+                    <div class="text-danger" *ngIf="name.hasError('required')">
+                        يجب ادخال الاسم
+                    </div>
+                    <div class="text-danger" *ngIf="name.hasError('minlength') || name.hasError('maxlength')">
+                        يجب ان يكون عدد الاحرف من 3 الى 20 حرف
+                    </div>
+
+                </div>
+                
+            </div>
+            <div class="form-floating mb-3">
+                <input type="text" class="form-control"
+                 id="floatingInput" placeholder="url"
+                 name="urlHandle"
+                 [(ngModel)]="category.urlHandle">
+                <label for="floatingInput" style="left: auto;">Url Handle</label>
+            </div>
+                
+        <button type="submit" class="btn btn-primary" [disabled]="categoryForm.invalid">{{isEditing? 'تعديل' : 'إضافة'}}</button>
+    </form>
+    </div>
+   
+</div>

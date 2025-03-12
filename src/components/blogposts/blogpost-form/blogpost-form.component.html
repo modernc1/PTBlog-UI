@@ -1,0 +1,152 @@
+<div class="container mt-5">
+
+    <h3 class="mb-3 text-center">{{isEditing? 'تعديل التدوينة' : 'أضف تدوينة'}}</h3>
+
+    <div *ngIf="errorMessage != ''" class="alert alert-danger text-center">
+        {{errorMessage}}
+    </div>
+
+    <div class="d-flex justify-content-center">
+        <form *ngIf="errorMessage === ''" #blogpostForm="ngForm" (ngSubmit)="OnSubmit()" class="border rounded p-4 w-75">
+
+            <div class="form-floating mb-3">
+                <input type="text" required minlength="5" maxlength="100"
+                #title="ngModel" class="form-control" id="floatingInput"
+                name="title"
+                [(ngModel)]="model.title">
+
+                <label for="floatingInput" style="left: auto;">العنوان</label>
+                <div *ngIf="title.invalid && (title.touched || title.dirty)">
+                    <div *ngIf="title.hasError('required')" class="text-danger">
+                        يجب ادخال العنوان
+                    </div>
+                    <div *ngIf="title.hasError('minlength') || title.hasError('maxlength')" class="text-danger">
+                        يجب أن يكون العنوان بين 5 إلى 100 حرف
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" required minlength="20" maxlength="1000"
+                #shortDescription="ngModel" class="form-control" id="floatingInput"
+                name="shortDescription"
+                [(ngModel)]="model.shortDescription">
+
+                <label for="floatingInput" style="left: auto;">وصف قصير</label>
+                <div *ngIf="shortDescription.invalid && (shortDescription.touched || shortDescription.dirty)">
+                    <div *ngIf="shortDescription.hasError('required')" class="text-danger">
+                        يجب ادخال الوصف
+                    </div>
+                    <div *ngIf="shortDescription.hasError('minlength') || shortDescription.hasError('maxlength')" class="text-danger">
+                        يجب أن يكون الوصف بين 20 إلى 300 حرف
+                    </div>
+                </div>
+            </div>
+
+            <div class=" mb-3">
+                <label style="left: auto;">المحتوى</label>
+                <div class="d-flex flex-row">
+                    <div class="col-6 p-2">
+                        <textarea
+                        id="content"
+                        name="content"
+                        class="form-control"
+                        style="height: 350px; max-height: 350px;"
+                        [(ngModel)] = "model.content">
+
+                        </textarea>
+                    </div>
+
+                    <div class="col-6 p-2" dir="ltr" style="max-height: 350px; overflow-y: scroll;">
+                        <markdown [data]="model.content"></markdown>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-floating mb-3 d-flex flex-row" style="height: 100px;">
+                <div class="col-6">
+                    <label class="mb-2" style="left: auto;">
+                        الصورة الرئيسية
+                    </label>
+                    <div class=" col-6 input-group mb-3" dir="ltr">
+                        <span class="input-group-text p-0" id="basic-addon1"><button type="button" class="btn btn-sm " (click)="OpenImageSelector()">اختر صورة</button></span>
+                        <input type="text" required
+                        #featureImageUrl="ngModel" class="form-control" id="floatingInput"
+                        name="featureImageUrl"
+                        [(ngModel)]="model.featureImageUrl">
+                    </div>
+
+                </div>
+
+
+
+                <ng-container *ngIf="model.featureImageUrl" >
+                    <div class="col-6 text-start">
+                        <img src="{{model.featureImageUrl}}" height="100px" width="auto">
+                    </div>
+                 </ng-container>
+
+
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="text" required
+                #urlHandle="ngModel" class="form-control" id="floatingInput"
+                name="urlHandle"
+                [(ngModel)]="model.urlHandle">
+
+                <label for="floatingInput" style="left: auto;">Url Handle</label>
+                <div >
+
+                </div>
+            </div>
+
+            <div class="form-floating mb-3">
+                <input type="date" required #dateCreated="ngModel" class="form-control"
+                id="floatingInput" name="dateCreated"
+                value="{{model.dateCreated}}"
+                [ngModel]="model.dateCreated | date: 'yyy-MM-dd'"
+                (ngModelChange)="model.dateCreated = $event">
+
+                <label for="floatingInput" style="left: auto;">تاريخ النشر</label>
+                <div >
+
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <input class="form-check-input ms-2 text-end" type="checkbox"
+                id="flexCheckChecked"
+                name="isVisible"
+                [(ngModel)]="model.isVisible">
+
+                <label class="form-check-label" for="flexCheckChecked">
+                  اظهار التدوينة
+                </label>
+            </div>
+
+            <div class="mb-3">
+                <label for="categories" style="left: auto;" class="form-label">التصنيفات</label>
+                <ng-container *ngIf="categories$ | async as categories">
+                    <select
+                    name="categories"
+                    id="categories"
+                    [(ngModel)]="selectedCategoriesId"
+                    class="form-control"
+                    multiple>
+                    <option *ngFor="let category of categories" [value]="category.id">{{category.name}}</option>
+                </select>
+                </ng-container>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="blogpostForm.invalid">{{isEditing? 'تعديل' : 'إضافة'}}</button>
+        </form>
+    </div>
+
+</div>
+
+                                        <!--add d-block class if variable true     add d-none class if variable is false-->
+<div class="image-selector-modal" [ngClass]="{'d-block' : isImageSelectorVisible, 'd-none': !isImageSelectorVisible}">
+    <button class="btn text-light" (click)="CloseImageSelector()" style="position: fixed; top: 10px; right: 10px;">X</button>
+    <app-image-selector></app-image-selector>
+</div>

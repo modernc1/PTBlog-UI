@@ -1,0 +1,12 @@
+.pagination .page-item:first-child .page-link {
+    border-top-right-radius: 0.25rem; /* Adjust for RTL */
+    border-bottom-right-radius: 0.25rem; /* Adjust for RTL */
+    border-top-left-radius: 0; /* Remove LTR styling */
+    border-bottom-left-radius: 0; /* Remove LTR styling */
+  }
+  .pagination .page-item:last-child .page-link {
+    border-top-left-radius: 0.25rem; /* Adjust for RTL */
+    border-bottom-left-radius: 0.25rem; /* Adjust for RTL */
+    border-top-right-radius: 0; /* Remove LTR styling */
+    border-bottom-right-radius: 0; /* Remove LTR styling */
+  }

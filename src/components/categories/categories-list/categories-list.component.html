@@ -1,0 +1,57 @@
+
+
+<div class="container mt-3">
+
+    <h3 class="mt-5 text-center">التصنيفات</h3>
+    <div class="w-100 text-start d-flex justify-content-between">
+      
+      <div class="input-group p-3 w-50" dir="ltr">
+        <button class="btn btn-warning text-white" type="button" (click)="onSearch(searchText.value)"><i class="bi bi-search"></i>
+        </button>
+        <input type="text" class="form-control" (keydown.enter)="onSearch(searchText.value)" dir="rtl" #searchText>
+      </div>
+
+      <div class="p-3">
+        <label> الترتيب <i class="bi bi-filter mx-1"></i></label>
+        <button class="btn btn-light" (click)="onSort(searchText.value)"><i [class]="currentSort"></i></button>
+      </div>
+
+        <button class="btn btn-primary m-3" [routerLink]="['/admin/categories/add']">إضافة</button>
+
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <ng-container *ngIf="categories$ | async as categories">
+          <table class="table table-hover table-responsive text-end">
+            <thead>
+              <tr>
+                <th style="width: 10%;">م.</th>
+                <th>الاسم</th>
+                <th>Url Handle</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let category of categories">
+                <th class="ellipsis"><p>{{category.id}}</p></th>
+                <td>{{category.name}}</td>
+                <td>{{category.urlHandle}}</td>
+                <th style="width: 20%;">
+                  <div class="btn-group" role="group" dir="ltr">
+                    <button class="btn btn-primary me-1" (click)="editCategory(category.id)" >تعديل</button>
+                    <button class="btn btn-danger ms-1" (click)="onDelete(category.id)">حذف</button>
+                  </div>
+                </th>
+              </tr>
+              
+            </tbody>
+          </table>
+        </ng-container>
+      </div>
+    </div>
+      
+</div>
+
+
+
